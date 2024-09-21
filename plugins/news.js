@@ -1,55 +1,42 @@
 const { cmd } = require('../command');
-const hirunews = require('hirunews-scraper');
+const { getNews } = require('@hiru-news-scraper/hiru-news-scraper');
 
-// Your WhatsApp number
-const yourNumber = '94727270908';  // Use international format without '+' or '-'
+// Define the group chat ID
+const groupChatId = 'DI6OYtkMV4g3Y3sA7hQNYu'; // Replace with your group chat ID
 
-// Hiru News function to send updates
-const sendNewsToUser = async (conn) => {
+// Function to send news to the WhatsApp group
+async function sendNewsToGroup(conn) {
     try {
-        const latestNews = await hirunews.getLatestNews(); // Fetch the latest news
-
-        if (!latestNews || latestNews.length === 0) {
-            console.error("No news found.");
-            return;
+        const news = await getNews(); // Fetch the latest news
+        if (news && news.length) {
+            news.forEach(async (item) => {
+                const message = `
+📰 *${item.title}*
+🔗 *Link*: ${item.link}
+🕒 *Published*: ${item.date}
+                `;
+                // Send the message to the group
+                await conn.sendMessage(groupChatId, { text: message });
+            });
+        } else {
+            console.log("No news available.");
         }
-
-        let newsText = "*📰 Hiru News Update*\n\n";
-        
-        latestNews.forEach((news, index) => {
-            newsText += `*${index + 1}. ${news.title}*\n${news.link}\n\n`;
-        });
-
-        // Send news to your number
-        await conn.sendMessage(`${yourNumber}@s.whatsapp.net`, { text: newsText });
-        console.log("News sent successfully!");
-
-    } catch (e) {
-        console.error("Failed to fetch or send news:", e);
+    } catch (error) {
+        console.error("Error fetching news:", error);
     }
-};
+}
 
-// 🎧--------AUTOMATIC NEWS SENDING-------//
-
+// Command to start fetching news
 cmd({
-    pattern: "news",
-    desc: "Send latest Hiru News",
-    category: "news",
+    pattern: 'hirunews',
+    desc: 'Fetch Hiru news',
+    category: 'news',
     filename: __filename
-},
-async (conn, mek, m, { from, reply }) => {
-    try {
-        await sendNewsToUser(conn);  // Send the latest news to your number
-        reply("Hiru News has been sent to your number.");
-
-    } catch (e) {
-        console.error("Error:", e);
-        reply("Failed to send news.");
-    }
+}, async (conn, mek) => {
+    await sendNewsToGroup(conn);
 });
 
-// Schedule news updates every hour (or customize the interval)
+// Set an interval to fetch news every hour (3600000 ms)
 setInterval(() => {
-    // Assuming `conn` is your WhatsApp connection object
-    sendNewsToUser(conn);  // Automatically send news updates
-}, 3600000);  // Every hour
+    sendNewsToGroup(conn);
+}, 3600000);
