@@ -5,7 +5,7 @@ cmd({
     desc: 'Display categorized bot commands',
     category: 'system',
     filename: __filename
-}, async (conn, mek, m, { from }) => {
+}, async (conn, mek, m, { from,quoted, body, isCmd, command, args, q, isGroup, sender, senderNumber, botNumber2, botNumber, pushname, isMe, isOwner, groupMetadata, groupName, participants, groupAdmins, isBotAdmins, isAdmins, reply }) => {
 
     const menuMessage = `
 ❄️━━━ 𝚀𝚄𝙴𝙴𝙽 𝙲𝙷𝙴𝚃𝙷𝙸 𝙼𝙳 ━━━❄️
@@ -13,7 +13,7 @@ cmd({
 ᴛɪᴍᴇ    ⏰ :
 ᴅᴀᴛᴇ    📅 :
 ꜱᴘᴇᴇᴅ  🧭 :
-ᴜꜱᴇʀ    😼 :
+ᴜꜱᴇʀ    😼 : {${pushname}}
 
 |• ᴅᴏᴡɴʟᴏᴀᴅ ᴍᴇɴᴜ 📥
 ━━━━━━━━━━━━━━━━
