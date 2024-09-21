@@ -28,7 +28,7 @@ cmd({
         const url = data.url;
 
         let desc = `
-🪄---- 𝐐𝐔𝐄𝐄𝐍 𝐂𝐇𝐄𝐓𝐇𝐈 𝐘𝐓 𝐃𝐎𝐖𝐍𝐋𝐎𝐀𝐃𝐄𝐑 ---🪄
+🪄---- 𝐐𝐔𝐄𝐄𝐍 𝐂𝐇𝐄𝐓𝐇𝐈 𝐘𝐓 𝐃𝐎𝐖𝐍𝐋𝐎𝐀𝐝𝐄𝐑 ---🪄
 
 *TITLE* 🔍: ${data.title}
 *DESCRIPTION* 🗒️: ${data.description}
@@ -53,6 +53,10 @@ cmd({
         
         // Prepare quality options
         const qualityOptions = downVideo.quality; // Assuming 'quality' contains available qualities
+        if (!qualityOptions || qualityOptions.length === 0) {
+            return reply("No available qualities found for this video.");
+        }
+        
         const buttonOptions = qualityOptions.map(q => {
             return { buttonId: q, buttonText: { displayText: q }, type: 1 };
         });
@@ -71,7 +75,6 @@ cmd({
             // Check if the selected quality is available
             if (!qualityOptions.includes(selectedQuality)) {
                 reply("No such quality available. Sending default quality...");
-                // Send default quality (adjust as needed)
                 const defaultQuality = qualityOptions[0];
                 await sendVideo(conn, from, defaultQuality, downVideo);
             } else {
@@ -87,21 +90,32 @@ cmd({
 
 // Function to send video based on quality
 async function sendVideo(conn, from, quality, downVideo) {
-    // React and show uploading text
-    await conn.sendMessage(from, { react: { text: "📤", key: mek.key } });
-    reply("*`I AM UPLOADING YOUR VIDEO...📤`*");
+    try {
+        // React and show uploading text
+        await conn.sendMessage(from, { react: { text: "📤", key: mek.key } });
+        reply("*`I AM UPLOADING YOUR VIDEO...📤`*");
 
-    // Assuming 'downVideo' contains URLs for different qualities
-    const downloadVideoUrl = downVideo.dl_url[quality]; // Adjust based on your data structure
+        // Assuming 'downVideo' contains URLs for different qualities
+        const downloadVideoUrl = downVideo.dl_url[quality]; // Adjust based on your data structure
 
-    // Send Video File
-    await conn.sendMessage(from, {
-        video: { url: downloadVideoUrl },
-        mimetype: "video/mp4",
-        caption: `${data.title} - Video (${quality})`
-    }, { quoted: mek });
+        if (!downloadVideoUrl) {
+            return reply("The selected quality is not available. Sending default quality...");
+            // Default quality logic here
+        }
 
-    // React when upload is complete
-    await conn.sendMessage(from, { react: { text: "✅", key: mek.key } });
-    reply("*`VIDEO UPLOADED SUCCESSFULLY...✅`*");
-}
+        // Send Video File
+        await conn.sendMessage(from, {
+            video: { url: downloadVideoUrl },
+            mimetype: "video/mp4",
+            caption: `${data.title} - Video (${quality})`
+        }, { quoted: mek });
+
+        // React when upload is complete
+        await conn.sendMessage(from, { react: { text: "✅", key: mek.key } });
+        reply("*`VIDEO UPLOADED SUCCESSFULLY...✅`*");
+        
+    } catch (error) {
+        console.error("Error sending video:", error);
+        reply("An error occurred while sending the video. Please try again later.");
+    }
+    }
