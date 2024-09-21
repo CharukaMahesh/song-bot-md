@@ -27,6 +27,7 @@
     "yt-search": "^2.12.1",
     "api-dylux": "^1.8.5",
     "wikipedia": "^2.1.2",
-    "weather-js": "^2.0.0"
+    "weather-js": "^2.0.0",
+    "yt-search": "^2.12.1"
   }
 }
