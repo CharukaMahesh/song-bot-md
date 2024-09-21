@@ -8,22 +8,52 @@ cmd({
 }, async (conn, mek, m, { from }) => {
 
     const menuMessage = `
-🌟 *Queen Chethi Bot Menu* 🌟
+❄️━━━ 𝚀𝚄𝙴𝙴𝙽 𝙲𝙷𝙴𝚃𝙷𝙸 𝙼𝙳 ━━━❄️
 
-📂 *AI Commands*:
-🤖 *AI*: Interact with AI using the command 'ai'.
+ᴛɪᴍᴇ    ⏰ :
+ᴅᴀᴛᴇ    📅 :
+ꜱᴘᴇᴇᴅ  🧭 :
+ᴜꜱᴇʀ    😼 :
 
-📂 *Download Commands*:
-🎶 *Song Download*: Use 'song' to download music.
-📁 *Mediafire Download*: Download files with 'mediafire'.
-📥 *YouTube Video*: Use 'ytmp4' to download videos.
+|• ᴅᴏᴡɴʟᴏᴀᴅ ᴍᴇɴᴜ 📥
+━━━━━━━━━━━━━━━━
+.ʏᴛ = ᴅᴏᴡɴʟᴏᴀᴅ ʏᴏᴜᴛᴜʙᴇ ᴠɪᴅᴇᴏ
 
-📂 *Search Commands*:
-🌤️ *Weather*: Use 'weather' to get updates.
-📚 *Wiki Search*: Use 'wiki' for information.
-🔍 *YouTube Search*: Search for videos with 'ytsearch'.
+.ᴠɪᴅᴇᴏ - ᴅᴏᴡɴʟᴏᴀᴅ ʏᴏᴜᴛᴜʙᴇ ᴠɪᴅᴇᴏ
 
-*Powered by Charuka Mahesh*
+.ʏᴛᴍᴘ4 - ᴅᴏᴡɴʟᴏᴀᴅ ʏᴏᴜᴛᴜʙᴇ ᴠɪᴅᴇᴏ
+
+.ꜱᴏɴɢ - ᴅᴏᴡɴʟᴏᴀᴅ ʏᴏᴜᴛᴜʙᴇ ᴍᴜꜱɪᴄ
+
+.ʏᴛᴍᴘ3 -ᴅᴏᴡɴʟᴏᴀᴅ ʏᴏᴜᴛᴜʙᴇ ᴍᴜꜱɪᴄ
+
+.ᴘʟᴀʏ - ᴅᴏᴡɴʟᴏᴀᴅ ʏᴏᴜᴛᴜʙᴇ ᴍᴜꜱɪᴄ
+
+.ᴍᴇᴅɪᴀꜰɪʀᴇ - ᴅᴏᴡɴʟᴏᴀᴅ ᴍᴇᴅɪᴀꜰɪʀᴇ ꜰɪʟᴇꜱ
+
+|• ꜱᴇᴀʀᴄʜ ᴍᴇɴᴜ 🔍
+━━━━━━━━━━━━━━━
+.ᴡɪᴋɪ - ꜱᴇᴀʀᴄʜ ᴀᴄʀᴏꜱꜱ ᴡɪᴋɪᴘᴇᴅɪᴀ
+
+.ᴡᴇᴀᴛʜᴇʀ - ɢᴇᴛ ᴡᴇᴀᴛʜᴇʀ ɪɴꜰᴏʀᴍᴀᴛɪᴏɴ ɢɪᴠᴇɴ ᴄɪᴛʏ ᴏʀ ᴄᴏᴜɴᴛʀʏ
+
+.ʏᴛꜱᴇᴀʀᴄʜ - ꜱᴇᴀʀᴄʜ ᴀᴄʀᴏꜱꜱ ʏᴏᴜᴛᴜʙᴇ
+
+|• ᴀɪ ᴍᴇɴᴜ 📡
+━━━━━━━━━━━━━━━
+.ᴀɪ - ɢᴇᴛ ʀᴇꜱᴘᴏɴꜱᴇ ꜰʀᴏᴍ ᴄʜᴀᴛ ɢᴘᴛ
+
+|• ᴏᴛʜᴇʀ ᴍᴇɴᴜ 💕
+━━━━━━━━━━━━━━━
+.ʀᴇꜱᴛᴀʀᴛ - ʀᴇꜱᴛᴀʀᴛ ᴛʜᴇ ʙᴏᴛ
+
+.ᴘɪɴɢ - ᴄʜᴇᴄᴋ ʙᴏᴛ ʀᴇꜱᴘᴏɴꜱᴇ ꜱᴘᴇᴇᴅ
+
+.ꜱʏꜱᴛᴇᴍ - ᴄʜᴇᴄᴋ ʙᴏᴛ ꜱᴇʀᴠᴇʀ ɪɴꜰᴏ
+
+.ᴀʙᴏᴜᴛ - ɢᴇᴛ ᴅᴇᴀᴛɪʟꜱ ᴀʙᴏᴜᴛ ᴛʜᴇ ʙᴏᴛ
+
+©𝙿𝙾𝚆𝙴𝚁𝙴𝙳 𝙱𝚈 𝙲𝙷𝙰𝚁𝚄𝙺𝙰 𝙼𝙰𝙷𝙴𝚂𝙷
 `;
 
     // Image URL from your previous message
