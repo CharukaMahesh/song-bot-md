@@ -4,7 +4,7 @@ const { cmd } = require('../command');
 
 cmd({
     pattern: "menu",
-    desc: "Show the bot menu",
+    desc: "Show the bot menu with buttons",
     category: "menu",
     filename: __filename
 },
@@ -23,14 +23,23 @@ async (conn, mek, m, { from, reply }) => {
 *ᴘᴏᴡᴇʀᴇᴅ ʙʏ ᴄʜᴀʀᴜᴋᴀ ᴍᴀʜᴇꜱʜ*
         `;
 
-        // Sending image with menu text
+        // Define buttons
+        const buttons = [
+            { buttonId: 'yt_download', buttonText: { displayText: '📥 Download YouTube Video' }, type: 1 },
+            { buttonId: 'news', buttonText: { displayText: '📰 Get Latest News' }, type: 1 },
+            { buttonId: 'sticker', buttonText: { displayText: '🖼 Convert to Sticker' }, type: 1 }
+        ];
+
+        // Send image with buttons and menu text
         await conn.sendMessage(from, {
             image: { url: 'https://raw.githubusercontent.com/CharukaMahesh/QUEEN-CHETHI/refs/heads/main/IMGES/20240921_115553.png' },
-            caption: menuText
+            caption: menuText,
+            buttons: buttons,
+            headerType: 4  // Specifies image as the header
         }, { quoted: mek });
 
     } catch (e) {
         console.error("Error:", e);
-        reply("An error occurred while displaying the menu. Please try again later.");
+        reply("An error occurred while displaying the menu with buttons. Please try again later.");
     }
 });
