@@ -43,10 +43,10 @@ async (conn, mek, m, { from, args, reply }) => {
 *Observation Time*: ${weatherData.current.observationtime}
 `;
 
-            // Fetch location image (you can use an appropriate API or static image)
-            const imageUrl = `https://source.unsplash.com/600x400/?${encodeURIComponent(weatherData.location.name)}`;
+            // Use the provided image URL
+            const imageUrl = "https://raw.githubusercontent.com/CharukaMahesh/QUEEN-CHETHI/refs/heads/main/IMGES/20240921_160218.jpg";
 
-            // Send the weather information with image
+            // Send the weather information with the custom image
             await conn.sendMessage(from, {
                 image: { url: imageUrl },
                 caption: weatherInfo
