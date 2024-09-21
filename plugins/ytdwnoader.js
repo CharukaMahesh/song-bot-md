@@ -6,6 +6,7 @@ const yts = require('yt-search');
 
 cmd({
     pattern: "video",
+    alias: ["yt","ytmp4"],
     desc: "Download videos",
     category: "download",
     filename: __filename
@@ -153,6 +154,7 @@ const yts = require('yt-search');
 
 cmd({
     pattern: "song",
+    alias: ["ytmp3","play"],
     desc: "Download songs",
     category: "download",
     filename: __filename
