@@ -1,20 +1,20 @@
 const { cmd } = require('../command');
 const fg = require('api-dylux');
 const yts = require('yt-search');
+const { MessageType } = require('@adiwajshing/baileys');
 
-// 🎧--------VIDEO-DOWNLOAD-------//
+// 🎥--------VIDEO-DOWNLOAD-------//
 
 cmd({
     pattern: "video",
     desc: "Download videos",
     category: "download",
     filename: __filename
-},
-async (conn, mek, m, { from, quoted, q, reply }) => {
+}, async (conn, mek, m, { from, quoted, q, reply }) => {
     try {
         if (!q) return reply("Please provide a valid URL or video name... 🙋‍♂️");
 
-        // React with 🔍 and show searching text
+        // React and show searching text
         await conn.sendMessage(from, { react: { text: "🔍", key: mek.key } });
         reply("*`I AM SEARCHING FOR YOUR VIDEO...🎥`*");
 
@@ -41,31 +41,43 @@ async (conn, mek, m, { from, quoted, q, reply }) => {
 
         await conn.sendMessage(from, { image: { url: data.thumbnail }, caption: desc }, { quoted: mek });
 
-        // React with 📥 and show downloading text
+        // React and show downloading text
         await conn.sendMessage(from, { react: { text: "📥", key: mek.key } });
-        reply("*`I AM Downloading Your Video...📥`*");
+        reply("*`I AM DOWNLOADING YOUR VIDEO...📥`*");
 
         // Download Video
         let downVideo = await fg.ytv(url);
         if (!downVideo || !downVideo.dl_url) {
             return reply("Failed to download video. Please try again later.");
         }
-        let downloadVideoUrl = downVideo.dl_url;
+        
+        // Prepare quality options
+        const qualityOptions = downVideo.quality; // Assuming 'quality' contains available qualities
+        const buttonOptions = qualityOptions.map(q => {
+            return { buttonId: q, buttonText: { displayText: q }, type: 1 };
+        });
 
-        // React with 📤 and show uploading text
-        await conn.sendMessage(from, { react: { text: "📤", key: mek.key } });
-        reply("*`I AM Uploading Your Video...📤`*");
-
-        // Send Video File
+        // Send quality selection buttons
         await conn.sendMessage(from, {
-            video: { url: downloadVideoUrl },
-            mimetype: "video/mp4",
-            caption: `${data.title} - Video`
+            text: "*Select Your Video Quality:*",
+            buttons: buttonOptions,
+            headerType: 1
         }, { quoted: mek });
 
-        // React with ✅ when upload is complete
-        await conn.sendMessage(from, { react: { text: "✅", key: mek.key } });
-        reply("*`Video uploaded successfull... ✅`*");
+        // Listen for button response
+        conn.on('buttonsResponse', async (buttonM) => {
+            const selectedQuality = buttonM.selectedButtonId;
+            
+            // Check if the selected quality is available
+            if (!qualityOptions.includes(selectedQuality)) {
+                reply("No such quality available. Sending default quality...");
+                // Send default quality (adjust as needed)
+                const defaultQuality = qualityOptions[0];
+                await sendVideo(conn, from, defaultQuality, downVideo);
+            } else {
+                await sendVideo(conn, from, selectedQuality, downVideo);
+            }
+        });
 
     } catch (e) {
         console.error("Error:", e);
@@ -73,73 +85,23 @@ async (conn, mek, m, { from, quoted, q, reply }) => {
     }
 });
 
-// 🎧--------YTMP4-DOWNLOAD-------//
+// Function to send video based on quality
+async function sendVideo(conn, from, quality, downVideo) {
+    // React and show uploading text
+    await conn.sendMessage(from, { react: { text: "📤", key: mek.key } });
+    reply("*`I AM UPLOADING YOUR VIDEO...📤`*");
 
-cmd({
-    pattern: "ytmp4",
-    desc: "Download videos",
-    category: "download",
-    filename: __filename
-},
-async (conn, mek, m, { from, quoted, q, reply }) => {
-    try {
-        if (!q) return reply("Please provide a valid URL or video name... 🙋‍♂️");
+    // Assuming 'downVideo' contains URLs for different qualities
+    const downloadVideoUrl = downVideo.dl_url[quality]; // Adjust based on your data structure
 
-        // React with 🔍 and show searching text
-        await conn.sendMessage(from, { react: { text: "🔍", key: mek.key } });
-        reply("*`I AM Searching Your Video...🎥`*");
+    // Send Video File
+    await conn.sendMessage(from, {
+        video: { url: downloadVideoUrl },
+        mimetype: "video/mp4",
+        caption: `${data.title} - Video (${quality})`
+    }, { quoted: mek });
 
-        // Search video
-        const search = await yts(q);
-        if (!search || !search.videos || !search.videos.length) {
-            return reply("No results found for the given query.");
-        }
-
-        const data = search.videos[0];
-        const url = data.url;
-
-        let desc = `
-🎥 𝗤𝗨𝗘𝗘𝗡 𝗖𝗛𝗘𝗧𝗛𝗜 𝗬𝗧 𝗩𝗜𝗗𝗘𝗢 𝗗𝗢𝗪𝗡𝗟𝗢𝗔𝗗𝗘𝗥 🎥
-
-*TITLE* 🔍: ${data.title}
-*DESCRIPTION* 🗒️: ${data.description}
-*TIME* ⏰: ${data.timestamp}
-*AGO* 🚀: ${data.ago}
-*VIEWS* 📽️: ${data.views}
-
-*ᴘᴏᴡᴇʀᴇᴅ ʙʏ ᴄʜᴀʀᴜᴋᴀ ᴍᴀʜᴇꜱʜ*
-        `;
-
-        await conn.sendMessage(from, { image: { url: data.thumbnail }, caption: desc }, { quoted: mek });
-
-        // React with 📥 and show downloading text
-        await conn.sendMessage(from, { react: { text: "📥", key: mek.key } });
-        reply("*`I AM Downloading Your video...📥`*");
-
-        // Download Video
-        let downVideo = await fg.ytv(url);
-        if (!downVideo || !downVideo.dl_url) {
-            return reply("Failed to download video. Please try again later.");
-        }
-        let downloadVideoUrl = downVideo.dl_url;
-
-        // React with 📤 and show uploading text
-        await conn.sendMessage(from, { react: { text: "📤", key: mek.key } });
-        reply("*`I AM Uploading Your Video...📤`*");
-
-        // Send Video File
-        await conn.sendMessage(from, {
-            video: { url: downloadVideoUrl },
-            mimetype: "video/mp4",
-            caption: `${data.title} - Video`
-        }, { quoted: mek });
-
-        // React with ✅ when upload is complete
-        await conn.sendMessage(from, { react: { text: "✅", key: mek.key } });
-        reply("*`Video uploaded successfully...✅`*");
-
-    } catch (e) {
-        console.error("Error:", e);
-        reply("An error occurred while processing your request. Please try again later.");
-    }
-});
+    // React when upload is complete
+    await conn.sendMessage(from, { react: { text: "✅", key: mek.key } });
+    reply("*`VIDEO UPLOADED SUCCESSFULLY...✅`*");
+}
