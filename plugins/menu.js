@@ -2,28 +2,32 @@ const { cmd } = require('../command');
 
 cmd({
     pattern: 'menu',
-    desc: 'Display bot commands',
+    desc: 'Display categorized bot commands',
     category: 'system',
     filename: __filename
 }, async (conn, mek, m, { from }) => {
 
-    const buttons = [
-        {buttonId: 'song', buttonText: {displayText: '🎶 Song Download'}, type: 1},
-        {buttonId: 'about', buttonText: {displayText: 'ℹ️ About'}, type: 1},
-        {buttonId: 'ai', buttonText: {displayText: '🤖 AI'}, type: 1},
-        {buttonId: 'mediafire', buttonText: {displayText: '📁 Mediafire Download'}, type: 1},
-        {buttonId: 'weather', buttonText: {displayText: '🌤️ Weather'}, type: 1},
-        {buttonId: 'wiki', buttonText: {displayText: '📚 Wiki Search'}, type: 1},
-        {buttonId: 'ytsearch', buttonText: {displayText: '🔍 YouTube Search'}, type: 1}
-    ];
+    const menuMessage = `
+🌟 *Queen Chethi Bot Menu* 🌟
 
-    const buttonMessage = {
-        image: {url: 'https://raw.githubusercontent.com/CharukaMahesh/Queen-Chethi-V1/refs/heads/main/Img/20240921_160218.jpg'},
-        caption: '🌟 *Queen Chethi Bot Menu* 🌟\n\nSelect an option below to access the respective feature:',
-        footer: 'Powered by Charuka Mahesh',
-        buttons: buttons,
-        headerType: 4
-    };
+📂 *AI Commands*:
+🤖 *AI*: Interact with AI using the command 'ai'.
 
-    await conn.sendMessage(from, buttonMessage, {quoted: mek});
+📂 *Download Commands*:
+🎶 *Song Download*: Use 'song' to download music.
+📁 *Mediafire Download*: Download files with 'mediafire'.
+📥 *YouTube Video*: Use 'ytmp4' to download videos.
+
+📂 *Search Commands*:
+🌤️ *Weather*: Use 'weather' to get updates.
+📚 *Wiki Search*: Use 'wiki' for information.
+🔍 *YouTube Search*: Search for videos with 'ytsearch'.
+
+*Powered by Charuka Mahesh*
+`;
+
+    // Image URL from your previous message
+    const imageUrl = 'https://raw.githubusercontent.com/CharukaMahesh/Queen-Chethi-V1/refs/heads/main/Img/20240921_160218.jpg';
+
+    await conn.sendMessage(from, { image: { url: imageUrl }, caption: menuMessage }, { quoted: mek });
 });
