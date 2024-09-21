@@ -71,7 +71,7 @@ console.log('Bot connected to whatsapp ✅')
 
 let up = `Queen Chethi Connected Successful ✅`;
 
-conn.sendMessage(ownerNumber + "@s.whatsapp.net", { image: { url: `https://github.com/CharukaMahesh/QUEEN-CHETHI/blob/main/IMGES/20240921_115553.png` }, caption: up })
+conn.sendMessage(ownerNumber + "@s.whatsapp.net", { image: { url: `https://raw.githubusercontent.com/CharukaMahesh/QUEEN-CHETHI/refs/heads/main/IMGES/20240921_115553.png` }, caption: up })
 
 }
 })
