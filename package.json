@@ -9,6 +9,7 @@
     "restart": "pm2 restart queenchethi"
   },
   "dependencies": {
+    "whatsapp-web.js": "^1.26.0",
     "@adiwajshing/baileys": "^5.0.0",
     "@whiskeysockets/baileys": "6.6.0",
     "@adiwajshing/keyed-db": "^0.2.4",
