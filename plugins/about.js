@@ -50,7 +50,7 @@ Thank you for using Queen Chethi Bot! 🚀
         `;
 
         // Image URL from GitHub
-        const imageUrl = 'https://raw.githubusercontent.com/CharukaMahesh/Queen-Chethi-V1/main/Img/20240906_190337.jpg';
+        const imageUrl = 'https://raw.githubusercontent.com/CharukaMahesh/QUEEN-CHETHI/refs/heads/main/IMGES/20240921_115553.png';
 
         // Send the image with the about message as caption
         await conn.sendMessage(from, {
