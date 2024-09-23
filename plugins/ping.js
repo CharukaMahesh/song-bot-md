@@ -1,26 +1,31 @@
 const { cmd } = require('../command');
 
-// 🏓--------PING COMMAND--------//
-
 cmd({
     pattern: "ping",
-    alias: ["pong"],
-    desc: "Check bot's response time",
-    category: "utility",
+    desc: "Check bot response speed",
+    category: "tools",
     filename: __filename
 },
-async (conn, mek, m, { from, reply }) => {
+async (conn, mek, m, {
+    from, reply
+}) => {
     try {
-        // React with 🏓 to indicate pinging
-        await conn.sendMessage(from, { react: { text: "🏓", key: mek.key } });
+        // React with 🚀 when the command is triggered
+        await conn.sendMessage(from, {
+            react: { text: "🌐", key: mek.key }
+        });
 
-        const start = Date.now();
-        await reply("🏓 *Pong!*");
-        const end = Date.now();
+        // Record the time when the command is received
+        const startTime = Date.now();
+        
+        // Send a message to check the response time
+        await conn.sendMessage(from, { text: "Pinging....❄️" });
 
-        // Send response time
-        const timeTaken = end - start;
-        reply(`⚡ *Response Time:* ${timeTaken}ms`);
+        // Calculate the time difference and send the ping result with a 📡 emoji
+        const endTime = Date.now();
+        const responseTime = endTime - startTime;
+        await conn.sendMessage(from, { text: `Response time: ${responseTime}ms 📡` }, { quoted: mek });
+
     } catch (e) {
         console.error("Error:", e);
         reply("An error occurred while processing your request. Please try again later.");
