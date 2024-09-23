@@ -27,4 +27,3 @@ async (conn, mek, m, { from }) => {
 
     await conn.sendMessage(from, { image: { url: image }, caption: caption });
 });
-});
