@@ -21,7 +21,7 @@ async (conn, mek, m, {
         // Fetch results from npm registry
         const response = await axios.get(`https://registry.npmjs.org/-/v1/search?text=${q}&size=5`);
         const packages = response.data.objects.map(pkg => 
-            `Name: ${pkg.package.name}\nVersion: ${pkg.package.version}\nDescription: ${pkg.package.description}\n\n`
+            `Name: ${pkg.package.name}\nVersion: ${pkg.package.version}\nDescription: ${pkg.package.description}\nLink: https://www.npmjs.com/package/${pkg.package.name}\n\n`
         ).join('');
 
         // Send the search results
