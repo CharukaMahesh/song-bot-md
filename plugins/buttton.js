@@ -7,12 +7,13 @@ cmd({
 },
 async (conn, mek, m, { from }) => {
     const buttons = [
-        { buttonId: 'btn1', buttonText: { displayText: 'Button 1' }, type: 1 },
-        { buttonId: 'btn2', buttonText: { displayText: 'Button 2' }, type: 1 },
+        { buttonId: 'id1', buttonText: { displayText: 'Option 1' }, type: 1 },
+        { buttonId: 'id2', buttonText: { displayText: 'Option 2' }, type: 1 },
     ];
 
     const buttonMessage = {
-        text: "Choose an option:",
+        contentText: "Choose an option:",
+        footerText: "Bot Menu",
         buttons: buttons,
         headerType: 1
     };
