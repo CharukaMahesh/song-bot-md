@@ -29,12 +29,16 @@ async (conn, mek, m, { from, quoted, q, reply }) => {
         const url = data.url;
 
         let desc = `
-🎶 𝗤𝗨𝗘𝗘𝗡 𝗖𝗛𝗘𝗧𝗛𝗜 𝗬𝗧 𝗦𝗢𝗡𝗚 𝗗𝗢𝗪𝗡𝗟𝗢𝗔𝗗𝗘𝗥 🎶
+❄️*𝕊𝕆ℕ𝔾 𝔹𝕆𝕋 𝕍1*❄️
 
 *TITLE* 🔍: ${data.title}
+
 *DESCRIPTION* 🗒️: ${data.description}
+
 *TIME* ⏰: ${data.timestamp}
+
 *AGO* 🚀: ${data.ago}
+
 *VIEWS* 📽️: ${data.views}
 
 *ᴘᴏᴡᴇʀᴇᴅ ʙʏ ᴄʜᴀʀᴜᴋᴀ ᴍᴀʜᴇꜱʜ*
