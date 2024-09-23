@@ -1,38 +1,57 @@
+const axios = require('axios');
+const cheerio = require('cheerio');
 const { cmd } = require('../command');
-const googleIt = require('google-it');
 
 cmd({
-    pattern: 'google',
-    desc: 'Search Google and return results',
-    category: 'search',
+    pattern: "google",
+    desc: "Search Google for a query",
+    category: "search",
     filename: __filename
-}, async (conn, mek, m, { from, args }) => {
-    const query = args.join(' ');
-
-    if (!query) {
-        return conn.sendMessage(from, 'Please provide a search term.', { quoted: mek });
-    }
-
+},
+async (conn, mek, m, { from, quoted, args, q, reply }) => {
     try {
-        // React with a search icon
-        await conn.react(m.key, '🔍');
-
-        const results = await googleIt({ query, limit: 5 });
-
-        if (results.length === 0) {
-            await conn.react(m.key, '❌'); // React with a cross if no results found
-            return conn.sendMessage(from, 'No results found.', { quoted: mek });
+        if (!q) {
+            return reply("Please provide a search query.");
         }
 
-        const message = results.map((item, index) => `${index + 1}. ${item.title}\n${item.link}`).join('\n\n');
+        const searchQuery = encodeURIComponent(q);
+        const url = `https://www.google.com/search?q=${searchQuery}`;
 
-        await conn.sendMessage(from, message, { quoted: mek });
+        // Fetch the Google search results page
+        const { data } = await axios.get(url, {
+            headers: {
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3'
+            }
+        });
 
-        // React with a checkmark icon after sending results
-        await conn.react(m.key, '✅');
-    } catch (error) {
-        console.error('Error searching Google:', error);
-        await conn.react(m.key, '❌'); // React with a cross on error
-        await conn.sendMessage(from, 'Sorry, I couldn\'t fetch the results at the moment.', { quoted: mek });
+        const $ = cheerio.load(data);
+        let searchResults = '';
+
+        // Select top results
+        $('h3').each((i, element) => {
+            if (i < 5) { // Limit to top 5 results
+                const title = $(element).text();
+                const link = $(element).parent().attr('href');
+                searchResults += `🔍 *Title*: ${title}\n🔗 *Link*: ${link}\n\n`;
+            }
+        });
+
+        if (searchResults === '') {
+            searchResults = 'No results found.';
+        }
+
+        // Auto-react to the command
+        await conn.sendMessage(from, {
+            react: { text: "🔍", key: mek.key }
+        });
+
+        // Send the search results
+        await conn.sendMessage(from, {
+            text: searchResults
+        }, { quoted: mek });
+
+    } catch (e) {
+        console.error("Error:", e);
+        reply("An error occurred while processing your request. Please try again later.");
     }
 });
