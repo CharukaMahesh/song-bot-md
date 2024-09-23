@@ -36,7 +36,11 @@ async (conn, mek, m, { from, quoted, q, reply }) => {
 
         searchMessage += "*ᴘᴏᴡᴇʀᴇᴅ ʙʏ ᴄʜᴀʀᴜᴋᴀ ᴍᴀʜᴇꜱʜ*";
 
-        await conn.sendMessage(from, { text: searchMessage }, { quoted: mek });
+        // Send the message with the image
+        await conn.sendMessage(from, { 
+            image: { url: "https://raw.githubusercontent.com/CharukaMahesh/song-bot-md/refs/heads/main/IMGES/20240923_205938.jpg" },
+            caption: searchMessage
+        }, { quoted: mek });
 
     } catch (e) {
         console.error("Error:", e);
