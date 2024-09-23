@@ -26,7 +26,5 @@ async (conn, mek, m, { from }) => {
     const image = 'https://raw.githubusercontent.com/CharukaMahesh/song-bot-md/refs/heads/main/IMGES/20240923_144904.jpg';
 
     await conn.sendMessage(from, { image: { url: image }, caption: caption });
-
-    conn.sendMessage(from, { react: { text: '❄️', key: mek.key } });
 });
 });
