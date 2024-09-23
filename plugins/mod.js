@@ -3,7 +3,7 @@ const axios = require('axios');
 const cheerio = require('cheerio');
 
 cmd({
-    pattern: 'hapmodsearch',
+    pattern: 'happymod',
     desc: 'Search apps/games on HappyMod',
     category: 'search',
     filename: __filename
