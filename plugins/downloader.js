@@ -18,7 +18,8 @@ async (conn, mek, m, { from, reply, q }) => {
 
         // Fetch media using nayan-media
         const mediaData = await nayanMedia(q);
-        
+        console.log(mediaData); // Log the response for debugging
+
         if (!mediaData || !mediaData.media_url) {
             return reply('No media found for the provided URL. Check the URL and privacy settings.');
         }
@@ -33,7 +34,7 @@ async (conn, mek, m, { from, reply, q }) => {
         reply(result);
         
     } catch (e) {
-        console.error("Error:", e);
+        console.error("Error:", e.message || e);
         reply("An error occurred while downloading the media. Please check the URL and try again.");
     }
 });
