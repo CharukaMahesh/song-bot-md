@@ -4,7 +4,7 @@ const he = require('he');
 const { cmd } = require('../command');
 
 cmd({
-    pattern: "fb",
+    pattern: "fbvideo",
     desc: "Download a Facebook video",
     category: "tools",
     filename: __filename
@@ -20,9 +20,10 @@ async (conn, mek, m, { from, reply, q }) => {
 
         // Download the video using the URL provided
         const videoData = await fbDownloader(q);
+        console.log(videoData); // Log the entire response for debugging
         
         if (!videoData || !videoData.video_url) {
-            return reply('No video found for the provided URL.');
+            return reply('No video found for the provided URL. Check the URL and privacy settings.');
         }
 
         const title = he.decode(videoData.title || 'N/A');
