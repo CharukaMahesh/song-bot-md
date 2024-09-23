@@ -17,9 +17,10 @@ cmd({
         // React with a search icon
         await conn.react(m.key, '🔍');
 
-        const results = await googleIt({ 'query': query, 'limit': 5 });
-        
+        const results = await googleIt({ query, limit: 5 });
+
         if (results.length === 0) {
+            await conn.react(m.key, '❌'); // React with a cross if no results found
             return conn.sendMessage(from, 'No results found.', { quoted: mek });
         }
 
@@ -31,6 +32,7 @@ cmd({
         await conn.react(m.key, '✅');
     } catch (error) {
         console.error('Error searching Google:', error);
+        await conn.react(m.key, '❌'); // React with a cross on error
         await conn.sendMessage(from, 'Sorry, I couldn\'t fetch the results at the moment.', { quoted: mek });
     }
 });
