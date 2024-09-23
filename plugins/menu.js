@@ -27,6 +27,7 @@ async (conn, mek, m, { from }) => {
 ❄️ ᴜᴍᴇꜱʜᴀ ꜱᴀᴛʜʏᴀɴᴊᴀʟɪ
 ❄️ ᴍɪᴛʜɪʟᴀ ꜱʜᴀʀᴀᴅʜᴀ
 ❄️ ɴᴀᴠᴇᴇɴ ᴘᴇᴛʜᴜᴍ
+❄️ ᴠɪʜᴀɢᴀ ꜱᴜʟᴀᴋꜱʜᴀɴᴀ
 ❄️ ᴄʜᴇᴛʜᴀɴᴀ ʀᴀᴊᴀɢᴜʀᴜ`;
 
     const image = 'https://raw.githubusercontent.com/CharukaMahesh/song-bot-md/refs/heads/main/IMGES/20240923_144904.jpg';
