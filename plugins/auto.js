@@ -1,5 +1,5 @@
 const cron = require('node-cron');
-const { conn } = require('./path_to_your_connection_file'); // Adjust the path as needed
+const { conn } = require('../index.js'); // Adjust the path as needed
 
 // Scheduled Good Night Message
 cron.schedule('35 21 * * *', async () => {
