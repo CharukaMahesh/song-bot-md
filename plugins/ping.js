@@ -1,33 +1,34 @@
+const axios = require('axios');
 const { cmd } = require('../command');
 
 cmd({
-    pattern: "ping",
-    desc: "Check bot response speed",
+    pattern: "npm",
+    desc: "Search for npm packages",
     category: "tools",
     filename: __filename
 },
 async (conn, mek, m, {
-    from, reply
+    from, reply, q
 }) => {
     try {
-        // React with 🚀 when the command is triggered
+        if (!q) return reply('Please provide a search term.');
+
+        // React with 🔍 when the command is triggered
         await conn.sendMessage(from, {
-            react: { text: "🚀", key: mek.key }
+            react: { text: "🔍", key: mek.key }
         });
 
-        // Record the time when the command is received
-        const startTime = Date.now();
+        // Fetch results from npm registry
+        const response = await axios.get(`https://registry.npmjs.org/-/v1/search?text=${q}&size=5`);
+        const packages = response.data.objects.map(pkg => 
+            `Name: ${pkg.package.name}\nVersion: ${pkg.package.version}\nDescription: ${pkg.package.description}\n\n`
+        ).join('');
+
+        // Send the search results
+        reply(packages || 'No results found.');
         
-        // Send a message to check the response time
-        await conn.sendMessage(from, { text: "Pong!" });
-
-        // Calculate the time difference and send the ping result with a 📡 emoji
-        const endTime = Date.now();
-        const responseTime = endTime - startTime;
-        await conn.sendMessage(from, { text: `Response time: ${responseTime}ms 📡` }, { quoted: mek });
-
     } catch (e) {
         console.error("Error:", e);
-        reply("An error occurred while processing your request. Please try again later.");
+        reply("An error occurred while fetching npm results. Please try again later.");
     }
 });
