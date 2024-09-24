@@ -36,6 +36,7 @@
     "cheerio": "^1.0.0",
     "hirunews-scraper": "^3.0.0",
     "google-it": "^1.6.3",
-    "node-cron": "^3.0.3"
+    "node-cron": "^3.0.3",
+    "songlyrics-finder": "^1.0.0"
   }
 }
