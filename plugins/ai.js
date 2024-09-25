@@ -29,7 +29,7 @@ async (conn, mek, m, { from, quoted, q, reply }) => {
         // Send the "thinking" message with a different image
         await conn.sendMessage(from, {
             image: { url: thinkingImageUrl },  // Send the thinking image
-            caption: 'AI IS THINKING...PLEASE WAIT....❄️'
+            caption: '*`AI IS THINKING...PLEASE WAIT....!`*'
         }, { quoted: mek });
 
         // Fetch the AI response
