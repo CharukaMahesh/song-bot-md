@@ -13,7 +13,7 @@
 
     "ALIVE_IMG": {
       "description": "Put Alive Img Here..",
-      "required": true
+      "required": false
     },
     
     "ALIVE_MSG": {
