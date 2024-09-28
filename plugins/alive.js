@@ -19,9 +19,10 @@ async (conn, mek, m, { from, reply }) => {
 
 *Hey, I am alive and running smoothly!*
 
-💡 *Version*: 1.0.0
+💡 *Version*: 1.0.2
 🛠️ *Status*: Online
 ⚡ *Prefix*: "."
+❄️ *Last Update*: 2024/09/27
 
 *𝕄𝕒𝕕𝕖 𝕓𝕪 𝕔𝕙𝕒𝕣𝕦𝕜𝕒 𝕞𝕒𝕙𝕖𝕤𝕙*
 
