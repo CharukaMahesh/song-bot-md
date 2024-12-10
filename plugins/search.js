@@ -38,7 +38,7 @@ async (conn, mek, m, { from, quoted, q, reply }) => {
 
         // Send the message with the image
         await conn.sendMessage(from, { 
-            image: { url: "https://raw.githubusercontent.com/CharukaMahesh/song-bot-md/refs/heads/main/IMGES/20240923_205938.jpg" },
+            image: { url: "https://raw.githubusercontent.com/CharukaMahesh/song-bot-md/refs/heads/main/IMGES/20241210_215109.jpg" },
             caption: searchMessage
         }, { quoted: mek });
 
