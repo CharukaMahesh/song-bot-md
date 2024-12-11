@@ -2,7 +2,7 @@ const { cmd } = require('../command');
 const axios = require('axios');
 
 cmd({
-    pattern: "g6",
+    pattern: "g6rel",
     desc: "Get Grade 6 papers from ethaksalawa.lk",
     category: "tools",
     filename: __filename
