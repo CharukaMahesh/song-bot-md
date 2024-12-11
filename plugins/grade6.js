@@ -2,6 +2,7 @@ const { cmd } = require('../command');
 
 cmd({
     pattern: "grade6",
+    alias: ["6" , "g6"],
     desc: "Displays bot menu",
     category: "tools",
     filename: __filename
