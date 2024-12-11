@@ -6,9 +6,8 @@ cmd({
     category: "tools",
     filename: __filename
 },
-async (conn, m, { from, pushName }) => {
-    try {
-        const caption = `*ʜᴇʟʟᴏ ${pushName || 'ᴜꜱᴇʀ'}.. ʜᴏᴡ ᴀʀᴇ ʏᴏᴜ..*❤️‍🩹
+async (conn, mek, m, { from , pushname }) => {
+    const caption = `*ʜᴇʟʟᴏ ${pushname}.. ʜᴏᴡ ᴀʀᴇ ʏᴏᴜ..*❤️‍🩹
 
 *ʏᴏᴜ ᴀʀᴇ ꜱᴇʟᴇᴄᴛᴇᴅ ɢʀᴀᴅᴇ* 0⃣6⃣
 
@@ -22,13 +21,12 @@ async (conn, m, { from, pushName }) => {
 ⭐│ *2*    *ꜰɪʀꜱᴛ ᴛᴇʀᴍ ᴛᴇꜱᴛ ᴘᴀᴘᴇʀ 📋*
 ⭐│ *3*    *ꜱᴇᴄᴏɴᴅ ᴛᴇʀᴍ ᴛᴇꜱᴛ ᴘᴀᴘᴇʀ 📋*
 ⭐│ *4*    *ᴛʜɪʀᴅ ᴛᴇʀᴍ ᴛᴇꜱᴛ ᴘᴀᴘᴇʀ 📋*
-⭐│ *5*    *ᴍᴏᴅᴇʟ ᴘᴀᴘᴇʀ📋*
+⭐│ *5*    *ᴍᴏᴅʟᴇ  ᴘᴀᴘᴇʀ📋*
 
 ╰─────────────✑
-*𝚙𝚘𝚠𝚎𝚛𝚎𝚍 𝚋𝚢 𝚌𝚑𝚊𝚛𝚞𝚔ᴀ*`;
+*𝚙𝚘𝚠𝚎𝚛𝚎𝚍 𝚋𝚢 𝚌𝚑𝚊𝚛𝚞𝚔𝚊*`;
 
-        await conn.sendMessage(from, { text: caption });
-    } catch (error) {
-        console.error('Error sending grade6 menu:', error);
-    }
+    const image = 'https://raw.githubusercontent.com/CharukaMahesh/song-bot-md/refs/heads/main/IMGES/20241210_214616.jpg';
+
+    await conn.sendMessage(from, { image: { url: image }, caption: caption });
 });
