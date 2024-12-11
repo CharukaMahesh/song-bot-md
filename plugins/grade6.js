@@ -6,7 +6,7 @@ cmd({
   filename: _filename,
   category: "inform"
 },
-  async(conn, mek, m { from }) => {
+async(conn, mek, m { from }) => {
     const caption = `*ʜᴇʟʟᴏ* ʜᴏᴡ ᴀʀᴇ ʏᴏᴜ..*❤️‍🩹
 
 *ʏᴏᴜ ᴀʀᴇ ꜱᴇʟᴇᴄᴛᴇᴅ ɢʀᴀᴅᴇ* 0⃣6⃣
