@@ -1,20 +1,23 @@
 const { cmd } = require('../command');
 
 cmd({
-    pattern: "g6rel",
-    desc: "Send Grade 6 PDF file link",
+    pattern: "g10sci3",
+    desc: "Send Grade 10 Science Paper 3 PDF",
     category: "tools",
     filename: __filename
 },
 async (conn, m, { from }) => {
-    const pdfUrl = "https://www.e-thaksalawa.moe.gov.lk/moodle/pluginfile.php/2335/mod_resource/content/7/SG6_Bud_PP_T1_2011_MahindaRajapaksha.pdf";
-    const caption = `*Here is your requested Grade 6 paper:*\n\n📄 [Download PDF](https://www.e-thaksalawa.moe.gov.lk/moodle/pluginfile.php/2335/mod_resource/content/7/SG6_Bud_PP_T1_2011_MahindaRajapaksha.pdf)`;
+    const pdfUrl = "https://github.com/CharukaMahesh/song-bot-md/blob/main/Main/Grade06/3%20Papers%E2%9D%A4%EF%B8%8F%E2%80%8D%F0%9F%A9%B9/sol_Sci_3tp_nwp_I_II_2016.pdf";
 
     try {
-        // Send the PDF file link
-        await conn.sendMessage(from, { text: caption });
+        // Send the PDF file directly
+        await conn.sendMessage(from, {
+            document: { url: pdfUrl },
+            mimetype: 'application/pdf',
+            fileName: 'Grade10_Science_Paper3.pdf'
+        });
     } catch (error) {
-        console.error('Error sending the PDF link:', error);
+        console.error('Error sending the PDF file:', error);
         await conn.sendMessage(from, { text: "*Failed to send the PDF file. Please try again later.*" });
     }
 });
