@@ -35,31 +35,31 @@ cmd(
 
     for (let i = 0; i < quiz.length; i++) {
       const question = quiz[i];
-      let answered = false;
 
-      // Send the question
+      // Send the question to the user
       await conn.sendMessage(from, {
         text: `🧠 *Question ${i + 1}*\n${question.question}\n\n${question.options.join(
           "\n"
         )}\n\n*Reply with the number of your answer (e.g., 1, 2)*`,
       });
 
+      // Wait for user response
       const userAnswer = await new Promise((resolve) => {
         const timeout = setTimeout(() => {
-          if (!answered) resolve(null); // Timeout if no answer
-        }, 20000); // 20 seconds
+          resolve(null); // Resolve with null if time is up
+        }, 20000); // Timeout after 20 seconds
 
+        // Event listener for the user's reply
         conn.ev.on("messages.upsert", (messageEvent) => {
           const msg = messageEvent.messages[0];
           if (
             msg.key.remoteJid === from && // Ensure it's from the same chat
-            !msg.key.fromMe && // Exclude bot messages
-            msg.message?.conversation // Check if the message contains text
+            !msg.key.fromMe && // Exclude bot's own messages
+            msg.message?.conversation // Check if it's a text message
           ) {
             const response = msg.message.conversation.trim();
-            if (!answered) {
+            if (response) {
               clearTimeout(timeout);
-              answered = true;
               resolve(response); // Resolve with the user's answer
             }
           }
