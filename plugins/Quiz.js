@@ -4,7 +4,7 @@ cmd({
   pattern: "quiz",
   desc: "Start a quiz game",
   category: "fun",
-  filename: _filename
+  filename: __filename
 }, 
 async (conn, mek, m, { from, pushname }) => {
   // Define quiz questions
