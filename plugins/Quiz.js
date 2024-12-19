@@ -36,6 +36,7 @@ cmd(
     for (let i = 0; i < quiz.length; i++) {
       const question = quiz[i];
       let timeLeft = 20; // Timer in seconds
+      let isAnswered = false;
 
       // Send the question
       await conn.sendMessage(from, {
@@ -44,30 +45,28 @@ cmd(
         )}\n\n*Reply with the number of your answer (e.g., 1, 2)*\nYou have *${timeLeft}s* to answer!`,
       });
 
-      let isAnswered = false;
-
-      // Wait for the user response or timeout
+      // Wait for the user's response
       const userAnswer = await new Promise((resolve) => {
-        const timer = setTimeout(() => {
-          if (!isAnswered) resolve(null);
-        }, timeLeft * 1000); // Wait for the timer to expire
+        const timeout = setTimeout(() => {
+          if (!isAnswered) resolve(null); // Timeout if no answer
+        }, timeLeft * 1000);
 
-        conn.ev.on("messages.upsert", async (messageEvent) => {
+        conn.ev.on("messages.upsert", (messageEvent) => {
           const msg = messageEvent.messages[0];
           if (
-            msg.key.remoteJid === from &&
-            !msg.key.fromMe &&
-            msg.message?.conversation
+            msg.key.remoteJid === from && // Ensure it's from the same chat
+            !msg.key.fromMe && // Exclude bot messages
+            msg.message?.conversation // Check if the message contains text
           ) {
             const answer = msg.message.conversation.trim();
-            clearTimeout(timer);
+            clearTimeout(timeout);
             isAnswered = true;
-            resolve(answer);
+            resolve(answer); // Resolve with the user's answer
           }
         });
       });
 
-      // Validate the user's answer
+      // Check the user's answer
       if (userAnswer === question.answer) {
         score++;
         await conn.sendMessage(from, { text: "✅ Correct!" });
