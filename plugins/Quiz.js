@@ -31,62 +31,64 @@ cmd(
       },
     ];
 
-    let score = 0; // Track score
+    let score = 0;
 
     for (let i = 0; i < quiz.length; i++) {
       const question = quiz[i];
-      let timeLeft = 20; // Timer for 20 seconds
+      let timeLeft = 20; // 20-second timer
 
-      // Send initial question
-      const questionMessage = await conn.sendMessage(from, {
+      // Send the question
+      await conn.sendMessage(from, {
         text: `🧠 *Question ${i + 1}*\n${question.question}\n\n${question.options.join(
           "\n"
         )}\n\n*Reply with the number of your answer (e.g., 1, 2)*\nYou have *${timeLeft}s* to answer!`,
       });
 
-      // Countdown logic (update time every second)
-      const countdown = setInterval(async () => {
-        timeLeft--;
-        if (timeLeft <= 0) {
-          clearInterval(countdown);
-        }
-      }, 1000);
+      // Track if the user responds in time
+      let userAnswered = false;
 
-      // Wait for user response or timeout
-      let userResponse;
-      try {
-        userResponse = await conn.ev.waitFor(
-          "messages.upsert",
-          20000, // Wait for 20 seconds
-          (event) =>
-            event.messages[0]?.key?.remoteJid === from &&
-            !event.messages[0]?.key?.fromMe
-        );
-        clearInterval(countdown);
-      } catch (err) {
-        clearInterval(countdown);
-        userResponse = { messages: [{ message: { conversation: "" } }] }; // No response fallback
-      }
+      const waitForAnswer = new Promise(async (resolve) => {
+        const interval = setInterval(() => {
+          timeLeft--;
+          if (timeLeft <= 0) {
+            clearInterval(interval);
+            resolve(null);
+          }
+        }, 1000);
 
-      const userAnswer = userResponse.messages[0]?.message?.conversation?.trim();
+        conn.ev.once("messages.upsert", async (messageEvent) => {
+          const msg = messageEvent.messages[0];
+          if (
+            msg.key.remoteJid === from &&
+            !msg.key.fromMe &&
+            msg.message?.conversation
+          ) {
+            clearInterval(interval);
+            resolve(msg.message.conversation.trim());
+          }
+        });
+      });
+
+      const userAnswer = await waitForAnswer;
 
       if (userAnswer === question.answer) {
         score++;
+        userAnswered = true;
         await conn.sendMessage(from, { text: "✅ Correct!" });
-      } else if (!userAnswer) {
+      } else if (userAnswer === null) {
         await conn.sendMessage(from, {
           text: "⏳ Time's up! Moving to the next question.",
         });
-      } else {
+      } else if (!userAnswered) {
         await conn.sendMessage(from, {
           text: `❌ Wrong! The correct answer was *${question.answer}*.`,
         });
       }
     }
 
-    // Final Score
+    // Display the final score
     await conn.sendMessage(from, {
-      text: `🎉 *Quiz Over!*\nYour score: *${score}/${quiz.length}*\nThank you for playing!`,
+      text: `🎉 *Quiz Over!*\nYour score: *${score}/${quiz.length}*\nThanks for playing!`,
     });
   }
 );
