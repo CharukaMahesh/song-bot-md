@@ -6,8 +6,8 @@ cmd({
   category: "fun",
   filename: __filename
 }, 
-async (conn, mek, m, { from, pushname }) => {
-  // Define quiz questions
+async (conn, mek, m, { from }) => {
+  // Quiz questions
   const quiz = [
     {
       question: "What is the capital of Sri Lanka?",
@@ -26,28 +26,28 @@ async (conn, mek, m, { from, pushname }) => {
     }
   ];
 
-  let score = 0; // Track the score
+  let score = 0; // Keep track of the score
 
-  // Loop through each question
+  // Loop through the questions
   for (let i = 0; i < quiz.length; i++) {
     const question = quiz[i];
-    let timeLeft = 20; // 20 seconds timer
+    let timeLeft = 20; // Time in seconds
 
-    // Send the question with a countdown
+    // Send the question
     const questionMessage = await conn.sendMessage(
       from, 
       { 
-        text: `*Question ${i + 1}*\n${question.question}\n\n${question.options.join("\n")}\n\n*Reply with the number of your answer (e.g., 1, 2, etc.)*\n\nYou have *${timeLeft}s* to answer!` 
+        text: `*Question ${i + 1}*\n${question.question}\n\n${question.options.join("\n")}\n\n*Reply with the number of your answer (e.g., 1, 2, etc.)*\nYou have *${timeLeft}s* to answer!` 
       }
     );
 
-    // Countdown logic
+    // Countdown timer
     const countdown = setInterval(async () => {
       timeLeft--;
       if (timeLeft > 0) {
         await conn.updateMessage(from, 
           { 
-            text: `*Question ${i + 1}*\n${question.question}\n\n${question.options.join("\n")}\n\n*Reply with the number of your answer (e.g., 1, 2, etc.)*\n\nYou have *${timeLeft}s* to answer!` 
+            text: `*Question ${i + 1}*\n${question.question}\n\n${question.options.join("\n")}\n\n*Reply with the number of your answer (e.g., 1, 2, etc.)*\nYou have *${timeLeft}s* to answer!` 
           }, 
           questionMessage.key
         );
@@ -59,25 +59,25 @@ async (conn, mek, m, { from, pushname }) => {
     // Wait for the user's response or timeout
     let response;
     try {
-      response = await conn.waitForMessage(from, 20000); // 20 seconds to respond
+      response = await conn.waitForMessage(from, 20000); // 20 seconds
       clearInterval(countdown);
     } catch (err) {
-      response = { text: "" }; // No response, move to the next question
+      response = { text: "" }; // No response
       clearInterval(countdown);
     }
 
     // Validate the answer
-    if (response.text.trim() === question.answer) {
+    const userAnswer = response.text.trim(); // Ensure the input is clean
+    if (userAnswer === question.answer) {
       score++;
       await conn.sendMessage(from, { text: "✅ Correct!" });
-    } else if (response.text.trim() === "") {
+    } else if (userAnswer === "") {
       await conn.sendMessage(from, { text: "⏳ Time's up! Moving to the next question." });
     } else {
       await conn.sendMessage(from, { text: `❌ Wrong! The correct answer was *${question.answer}*.` });
     }
   }
 
-  // Send final score
-  const finalMessage = `*Quiz Over!*\n\nYour score: ${score}/${quiz.length}`;
-  await conn.sendMessage(from, { text: finalMessage });
+  // Final score
+  await conn.sendMessage(from, { text: `*Hello ${pushname} Quiz Over!*\n\nYour score: ${score}/${quiz.length}` });
 });
