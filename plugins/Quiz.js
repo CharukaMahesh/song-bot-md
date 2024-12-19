@@ -35,20 +35,20 @@ cmd(
 
     for (let i = 0; i < quiz.length; i++) {
       const question = quiz[i];
-      let timeLeft = 20; // 20-second timer
+      let timeLeft = 20; // Timer for 20 seconds
 
       // Send initial question
-      await conn.sendMessage(from, {
+      const questionMessage = await conn.sendMessage(from, {
         text: `🧠 *Question ${i + 1}*\n${question.question}\n\n${question.options.join(
           "\n"
         )}\n\n*Reply with the number of your answer (e.g., 1, 2)*\nYou have *${timeLeft}s* to answer!`,
       });
 
-      // Countdown logic
-      const countdownInterval = setInterval(async () => {
+      // Countdown logic (update time every second)
+      const countdown = setInterval(async () => {
         timeLeft--;
         if (timeLeft <= 0) {
-          clearInterval(countdownInterval);
+          clearInterval(countdown);
         }
       }, 1000);
 
@@ -57,12 +57,14 @@ cmd(
       try {
         userResponse = await conn.ev.waitFor(
           "messages.upsert",
-          20000, // 20 seconds timeout
-          (event) => event.messages[0]?.key?.remoteJid === from
+          20000, // Wait for 20 seconds
+          (event) =>
+            event.messages[0]?.key?.remoteJid === from &&
+            !event.messages[0]?.key?.fromMe
         );
-        clearInterval(countdownInterval);
+        clearInterval(countdown);
       } catch (err) {
-        clearInterval(countdownInterval);
+        clearInterval(countdown);
         userResponse = { messages: [{ message: { conversation: "" } }] }; // No response fallback
       }
 
