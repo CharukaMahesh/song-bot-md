@@ -35,21 +35,19 @@ cmd(
 
     for (let i = 0; i < quiz.length; i++) {
       const question = quiz[i];
-      let timeLeft = 20; // Timer in seconds
-      let isAnswered = false;
+      let answered = false;
 
       // Send the question
       await conn.sendMessage(from, {
         text: `🧠 *Question ${i + 1}*\n${question.question}\n\n${question.options.join(
           "\n"
-        )}\n\n*Reply with the number of your answer (e.g., 1, 2)*\nYou have *${timeLeft}s* to answer!`,
+        )}\n\n*Reply with the number of your answer (e.g., 1, 2)*`,
       });
 
-      // Wait for the user's response
       const userAnswer = await new Promise((resolve) => {
         const timeout = setTimeout(() => {
-          if (!isAnswered) resolve(null); // Timeout if no answer
-        }, timeLeft * 1000);
+          if (!answered) resolve(null); // Timeout if no answer
+        }, 20000); // 20 seconds
 
         conn.ev.on("messages.upsert", (messageEvent) => {
           const msg = messageEvent.messages[0];
@@ -58,15 +56,17 @@ cmd(
             !msg.key.fromMe && // Exclude bot messages
             msg.message?.conversation // Check if the message contains text
           ) {
-            const answer = msg.message.conversation.trim();
-            clearTimeout(timeout);
-            isAnswered = true;
-            resolve(answer); // Resolve with the user's answer
+            const response = msg.message.conversation.trim();
+            if (!answered) {
+              clearTimeout(timeout);
+              answered = true;
+              resolve(response); // Resolve with the user's answer
+            }
           }
         });
       });
 
-      // Check the user's answer
+      // Check the answer
       if (userAnswer === question.answer) {
         score++;
         await conn.sendMessage(from, { text: "✅ Correct!" });
@@ -81,7 +81,7 @@ cmd(
       }
     }
 
-    // Display the final score
+    // Send final score
     await conn.sendMessage(from, {
       text: `🎉 *Quiz Over!*\nYour score: *${score}/${quiz.length}*\nThanks for playing!`,
     });
