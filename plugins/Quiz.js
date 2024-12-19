@@ -35,7 +35,7 @@ cmd(
 
     for (let i = 0; i < quiz.length; i++) {
       const question = quiz[i];
-      let timeLeft = 20; // 20-second timer
+      let timeLeft = 20; // Timer in seconds
 
       // Send the question
       await conn.sendMessage(from, {
@@ -44,42 +44,38 @@ cmd(
         )}\n\n*Reply with the number of your answer (e.g., 1, 2)*\nYou have *${timeLeft}s* to answer!`,
       });
 
-      // Track if the user responds in time
-      let userAnswered = false;
+      let isAnswered = false;
 
-      const waitForAnswer = new Promise(async (resolve) => {
-        const interval = setInterval(() => {
-          timeLeft--;
-          if (timeLeft <= 0) {
-            clearInterval(interval);
-            resolve(null);
-          }
-        }, 1000);
+      // Wait for the user response or timeout
+      const userAnswer = await new Promise((resolve) => {
+        const timer = setTimeout(() => {
+          if (!isAnswered) resolve(null);
+        }, timeLeft * 1000); // Wait for the timer to expire
 
-        conn.ev.once("messages.upsert", async (messageEvent) => {
+        conn.ev.on("messages.upsert", async (messageEvent) => {
           const msg = messageEvent.messages[0];
           if (
             msg.key.remoteJid === from &&
             !msg.key.fromMe &&
             msg.message?.conversation
           ) {
-            clearInterval(interval);
-            resolve(msg.message.conversation.trim());
+            const answer = msg.message.conversation.trim();
+            clearTimeout(timer);
+            isAnswered = true;
+            resolve(answer);
           }
         });
       });
 
-      const userAnswer = await waitForAnswer;
-
+      // Validate the user's answer
       if (userAnswer === question.answer) {
         score++;
-        userAnswered = true;
         await conn.sendMessage(from, { text: "✅ Correct!" });
       } else if (userAnswer === null) {
         await conn.sendMessage(from, {
           text: "⏳ Time's up! Moving to the next question.",
         });
-      } else if (!userAnswered) {
+      } else {
         await conn.sendMessage(from, {
           text: `❌ Wrong! The correct answer was *${question.answer}*.`,
         });
