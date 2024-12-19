@@ -1,85 +1,78 @@
-const quizzes = [
+const { cmd } = require('../command');
+
+cmd({
+  pattern: "quiz",
+  desc: "Start a quiz game with a timer",
+  category: "fun",
+  filename: __filename
+}, 
+async (conn, mek, m, { from }) => {
+  const quiz = [
     {
-        question: "What is the capital of Sri Lanka?",
-        options: ["Kandy", "Galle", "Colombo", "Jaffna"],
-        answer: 3 // Correct option number
+      question: "What is the capital of Sri Lanka?",
+      options: ["1. Colombo", "2. Kandy", "3. Galle", "4. Jaffna"],
+      answer: "1"
     },
     {
-        question: "What is 5 + 7?",
-        options: ["10", "11", "12", "13"],
-        answer: 3
+      question: "What is 2 + 2?",
+      options: ["1. 3", "2. 4", "3. 5", "4. 6"],
+      answer: "2"
     },
     {
-        question: "Who wrote the national anthem of Sri Lanka?",
-        options: ["Rabindranath Tagore", "Ananda Samarakoon", "Sarojini Naidu", "C. Suntharalingam"],
-        answer: 2
-    },
-];
-
-const activeQuizzes = {};
-
-module.exports = {
-    name: 'quiz',
-    description: 'Start a quiz game',
-    command: '.quiz',
-    handler: async (conn, m, { command, args }) => {
-        const from = m.key.remoteJid;
-
-        if (command === '.quiz') {
-            startQuiz(conn, from);
-        } else if (command === '.over') {
-            if (activeQuizzes[from]) {
-                conn.sendMessage(from, { text: `❌ Quiz Over!\nFinal Score: ${activeQuizzes[from].score}\nWrong Answers: ${activeQuizzes[from].wrong}` });
-                delete activeQuizzes[from];
-            } else {
-                conn.sendMessage(from, { text: `⚠️ No quiz is currently active!` });
-            }
-        } else if (activeQuizzes[from]) {
-            validateAnswer(conn, from, command);
-        }
+      question: "Who wrote the Harry Potter series?",
+      options: ["1. J.K. Rowling", "2. J.R.R. Tolkien", "3. George R.R. Martin", "4. C.S. Lewis"],
+      answer: "1"
     }
-};
+  ];
 
-function startQuiz(conn, from) {
-    const quiz = {
-        index: 0,
-        score: 0,
-        wrong: 0,
-    };
-    activeQuizzes[from] = quiz;
-    sendQuiz(conn, from, quiz);
-}
+  let score = 0; // Track score
 
-function sendQuiz(conn, from, quiz) {
-    if (quiz.index >= quizzes.length) {
-        conn.sendMessage(from, { text: `🎉 Quiz Over!\nScore: ${quiz.score}\nWrong Answers: ${quiz.wrong}` });
-        delete activeQuizzes[from];
-        return;
+  for (let i = 0; i < quiz.length; i++) {
+    const question = quiz[i];
+    let timeLeft = 20; // 20-second timer
+
+    const questionMessage = await conn.sendMessage(
+      from, 
+      { 
+        text: `🧠 *Question ${i + 1}*\n${question.question}\n\n${question.options.join("\n")}\n\n*Reply with the number of your answer (e.g., 1, 2)*\nYou have *${timeLeft}s* to answer!` 
+      }
+    );
+
+    // Countdown Timer
+    const countdown = setInterval(async () => {
+      timeLeft--;
+      if (timeLeft > 0) {
+        await conn.updateMessage(
+          from, 
+          { text: `🧠 *Question ${i + 1}*\n${question.question}\n\n${question.options.join("\n")}\n\n*Reply with the number of your answer (e.g., 1, 2)*\nYou have *${timeLeft}s* left!` }, 
+          questionMessage.key
+        );
+      } else {
+        clearInterval(countdown);
+      }
+    }, 1000);
+
+    // Wait for response or timeout
+    let userResponse;
+    try {
+      userResponse = await conn.waitForMessage(from, 20000); // 20 seconds
+      clearInterval(countdown);
+    } catch (err) {
+      clearInterval(countdown);
+      userResponse = { text: "" }; // No response
     }
 
-    const currentQuiz = quizzes[quiz.index];
-    const message = `🤔 *Question ${quiz.index + 1}*\n\n${currentQuiz.question}\n\n` +
-        currentQuiz.options.map((opt, idx) => `${idx + 1}. ${opt}`).join('\n') +
-        `\n\n💡 Reply with the option number (e.g., 1, 2, 3, or 4)`;
-
-    conn.sendMessage(from, { text: message });
-}
-
-function validateAnswer(conn, from, userAnswer) {
-    const quiz = activeQuizzes[from];
-    if (!quiz) return;
-
-    const currentQuiz = quizzes[quiz.index];
-
-    if (parseInt(userAnswer) === currentQuiz.answer) {
-        quiz.score += 1;
-        conn.sendMessage(from, { text: `✅ Correct!`, react: { text: "✅", key: { remoteJid: from } } });
+    const userAnswer = userResponse.text.trim();
+    if (userAnswer === question.answer) {
+      score++;
+      await conn.sendMessage(from, { text: "✅ Correct!" });
+    } else if (!userAnswer) {
+      await conn.sendMessage(from, { text: "⏳ Time's up! Moving to the next question." });
     } else {
-        quiz.wrong += 1;
-        const correctAnswerText = currentQuiz.options[currentQuiz.answer - 1];
-        conn.sendMessage(from, { text: `❌ Wrong! The correct answer was: ${currentQuiz.answer}. ${correctAnswerText}`, react: { text: "❌", key: { remoteJid: from } } });
+      await conn.sendMessage(from, { text: `❌ Wrong! The correct answer was *${question.answer}*.` });
     }
+  }
 
-    quiz.index += 1;
-    setTimeout(() => sendQuiz(conn, from, quiz), 3000);
-          }
+  // Final Score
+  await conn.sendMessage(from, { text: `🎉 *Quiz Over!*\nYour score: *${score}/${quiz.length}*` });
+});
