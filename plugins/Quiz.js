@@ -46,21 +46,27 @@ cmd(
 
       const userAnswer = await new Promise((resolve) => {
         const timeout = setTimeout(() => {
-          if (!answered) resolve(null); // Timeout if no answer
+          if (!answered) {
+            resolve(null); // Timeout if no answer
+            conn.sendMessage(from, { text: "⏳ Time's up! Moving to the next question." });
+          }
         }, 20000); // 20 seconds
 
-        conn.ev.on("messages.upsert", (messageEvent) => {
+        conn.ev.on("messages.upsert", async (messageEvent) => {
           const msg = messageEvent.messages[0];
           if (
-            msg.key.remoteJid === from && // Ensure it's from the same chat
-            !msg.key.fromMe && // Exclude bot messages
-            msg.message?.conversation // Check if the message contains text
+            msg.key.remoteJid === from &&
+            !msg.key.fromMe &&
+            msg.message?.conversation
           ) {
             const response = msg.message.conversation.trim();
             if (!answered) {
               clearTimeout(timeout);
               answered = true;
-              resolve(response); // Resolve with the user's answer
+              resolve(response);
+
+              // Send a confirmation message to the user
+              await conn.sendMessage(from, { text: `You answered: ${response}` });
             }
           }
         });
@@ -70,11 +76,7 @@ cmd(
       if (userAnswer === question.answer) {
         score++;
         await conn.sendMessage(from, { text: "✅ Correct!" });
-      } else if (userAnswer === null) {
-        await conn.sendMessage(from, {
-          text: "⏳ Time's up! Moving to the next question.",
-        });
-      } else {
+      } else if (userAnswer !== null) {
         await conn.sendMessage(from, {
           text: `❌ Wrong! The correct answer was *${question.answer}*.`,
         });
