@@ -6,7 +6,7 @@ cmd({
   category: "fun",
   filename: __filename
 }, 
-async (conn, mek, m, { from }) => {
+async (conn, mek, m, { from , pushname }) => {
   // Quiz questions
   const quiz = [
     {
