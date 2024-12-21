@@ -10,5 +10,5 @@ module.exports = {
     ALIVE_IMG: process.env.ALIVE_IMG || "https://raw.githubusercontent.com/CharukaMahesh/QUEEN-CHETHI/refs/heads/main/IMGES/20240921_115553.png",
     ALIVE_MSG: process.env.ALIVE_MSG || "*`HI I AM ONLINE...🪄`*",
     AUTO_READ_STATUS: process.env.AUTO_READ_STATUS || "true",
-    MODE: process.env.MODE || "public",
+    MODE: process.env.MODE || "groups",
 };
