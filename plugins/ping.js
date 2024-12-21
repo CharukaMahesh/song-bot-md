@@ -19,12 +19,16 @@ async (conn, mek, m, {
         const startTime = Date.now();
         
         // Send a message to check the response time
-        await conn.sendMessage(from, { text: "Pinging....❄️" });
+        await conn.sendMessage(from, { text: "> ᴘɪɴɢɪɴɢ..⭐" });
 
         // Calculate the time difference and send the ping result with a 📡 emoji
         const endTime = Date.now();
         const responseTime = endTime - startTime;
-        await conn.sendMessage(from, { text: `Response time: ${responseTime}ms 📡` }, { quoted: mek });
+        await conn.sendMessage(from, { text: `*ʜᴇʟʟᴏ ${pushname}*
+
+*ʀᴇꜱᴘᴏɴꜱᴇ ᴛɪᴍᴇ ɪꜱ* ⏰ *:* *${responseTime} ᴍꜱ* 📡
+
+> ᴍᴀᴅᴇ ʙʏ ᴄʜᴀʀᴜᴋᴀ` }, { quoted: mek });
 
     } catch (e) {
         console.error("Error:", e);
