@@ -44,7 +44,7 @@ async (conn, mek, m, { from, quoted, q, reply }) => {
         const time = currentDateTime.toLocaleTimeString();  // Format as per the local time
 
         // Append date and time to the message
-        searchMessage += `\n*📅 Date*: ${date}\n*🕒 Time*: ${time}\n`;
+        searchMessage += `\n> ᴛᴏᴅᴀʏ ɪꜱ📅: ${date}\n\n`;
         searchMessage += "> ᴇɴᴊᴏʏ ʏᴏᴜʀ ʏᴏᴜᴛᴜʙᴇ ꜱᴇᴀʀᴄʜ\n";
 
         // Send the search results with an image thumbnail and video details
