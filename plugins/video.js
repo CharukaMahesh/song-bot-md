@@ -17,7 +17,7 @@ async (conn, mek, m, { from, quoted, q, reply }) => {
 
         // React with 🔍 and show searching text
         await conn.sendMessage(from, { react: { text: "🔍", key: mek.key } });
-        reply("*`I AM SEARCHING FOR YOUR VIDEO...🎥`*");
+        reply("> ꜱᴇᴀʀᴄʜɪɴɢ ꜰᴏʀ ʏᴏᴜʀ ꜱᴏɴɢ.. 🔎");
 
         // Search video
         const search = await yts(q);
@@ -28,27 +28,26 @@ async (conn, mek, m, { from, quoted, q, reply }) => {
         const data = search.videos[0];
         const url = data.url;
 
-        let desc = `
-❄️*𝕍𝕀𝔻𝔼𝕆 𝔹𝕆𝕋 𝕍1*❄️
+        let desc = `*⭐ -ᴠɪᴅᴇᴏ ᴅᴏᴡɴʟᴏᴀᴅᴇʀ- ⭐*
 
-*TITLE* 🔍: ${data.title}
+> ᴠɪᴅᴇᴏ ᴅᴇᴛᴀɪʟꜱ 📊
 
-*DESCRIPTION* 🗒️: ${data.description}
+╭─────────────✑
+◉│ *1*    *ᴛɪᴛʟᴇ📽️ :* *${data.title}*
+◉│ *2*    *ᴛɪᴍᴇ⏰ :* *${data.timestamp}*
+◉│ *3*    *ᴀɢᴏ📆 :* *${data.ago}*
+◉│ *4*    *ᴠɪᴇᴡꜱ🔔 :* *${data.views}*
+╰─────────────✑
 
-*TIME* ⏰: ${data.timestamp}
+*ᴇɴᴊᴏʏ ʏᴏᴜʀ ᴠɪᴅᴇᴏ*
 
-*AGO* 🚀: ${data.ago}
-
-*VIEWS* 📽️: ${data.views}
-
-*ᴘᴏᴡᴇʀᴇᴅ ʙʏ ᴄʜᴀʀᴜᴋᴀ ᴍᴀʜᴇꜱʜ*
-        `;
+> ᴘᴏᴡᴇʀᴇᴅ ʙʏ ᴄʜᴀʀᴜᴋᴀ ᴍᴀʜᴇꜱʜ`;
 
         await conn.sendMessage(from, { image: { url: data.thumbnail }, caption: desc }, { quoted: mek });
 
         // React with 📥 and show downloading text
         await conn.sendMessage(from, { react: { text: "📥", key: mek.key } });
-        reply("*`I AM Downloading Your Video...📥`*");
+        reply("> ᴅᴏᴡɴʟᴏᴀᴅɪɴɢ ʏᴏᴜʀ ᴠɪᴅᴇᴏ...📥");
 
         // Download Video
         let downVideo = await fg.ytv(url);
@@ -59,7 +58,7 @@ async (conn, mek, m, { from, quoted, q, reply }) => {
 
         // React with 📤 and show uploading text
         await conn.sendMessage(from, { react: { text: "📤", key: mek.key } });
-        reply("*`I AM Uploading Your Video...📤`*");
+        reply("> ᴜᴘʟᴏᴀᴅɪɴɢ ʏᴏᴜʀ ᴠɪᴅᴇᴏ...📤");
 
         // Send Video File
         await conn.sendMessage(from, {
@@ -70,7 +69,7 @@ async (conn, mek, m, { from, quoted, q, reply }) => {
 
         // React with ✅ when upload is complete
         await conn.sendMessage(from, { react: { text: "✅", key: mek.key } });
-        reply("*`Video uploaded successfully...✅`*");
+        reply("> ᴠɪᴅᴇᴏ ᴜᴘʟᴏᴀᴅ ꜱᴜᴄᴄᴇꜱꜱꜰᴜʟʟʏ...✅");
 
     } catch (e) {
         console.error("Error:", e);
