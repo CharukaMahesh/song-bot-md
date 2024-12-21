@@ -11,31 +11,36 @@ cmd({
 },
 async (conn, mek, m, { from, reply }) => {
     try {
-        // React with 💡 to indicate the bot is alive
+        // Define pushname safely
+        const pushname = m.pushName || "User";
+
+        // React with ⭐ to indicate the bot is alive
         await conn.sendMessage(from, { react: { text: "⭐", key: mek.key } });
 
-        const aliveMessage = `> ʜᴇʏ ${pushname} ❤️‍🩹..ɪ ᴀᴍ ᴀʟɪᴠᴇ ᴀɴᴅ ʀᴜɴɴɪɴɢ ꜱᴍᴏᴏᴛʜʟʏ..⭐
+        const aliveMessage = `
+> ʜᴇʏ ${pushname} ❤️‍🩹..
+ɪ ᴀᴍ ᴀʟɪᴠᴇ ᴀɴᴅ ʀᴜɴɴɪɴɢ ꜱᴍᴏᴏᴛʜʟʏ..⭐
 
 ╭─────────────✑
-     *ᴠᴇʀꜱɪᴏɴ⚙️* : *1.0.0*
-     *ꜱᴛᴀᴛᴜꜱ♻️* : *ᴏɴʟɪɴᴇ*
-     *ᴘʀᴇꜰɪx🛞* : *•*
-     *ʟᴀꜱᴛ ᴜᴘᴅᴀᴛᴇ📆* : *2024/12/21*
+    *ᴠᴇʀꜱɪᴏɴ⚙️*: *1.0.0*
+    *ꜱᴛᴀᴛᴜꜱ♻️*: *ᴏɴʟɪɴᴇ*
+    *ᴘʀᴇꜰɪx🛞*: *•*
+    *ʟᴀꜱᴛ ᴜᴘᴅᴀᴛᴇ📆*: *2024/12/21*
 ╰─────────────✑
 
-*ᴛʜᴀɴᴋꜱ  ꜰᴏʀ ᴜꜱɪɴɢ❤️‍🩹*
+*ᴛʜᴀɴᴋꜱ ꜰᴏʀ ᴜꜱɪɴɢ❤️‍🩹*
 
 > ᴘᴏᴡᴇʀᴇᴅ ʙʏ ᴄʜᴀʀᴜᴋᴀ ᴍᴀʜᴇꜱʜ
 `;
 
-        // Send alive message with the specified image
+        // Send alive message with image
         await conn.sendMessage(from, {
             image: { url: 'https://raw.githubusercontent.com/CharukaMahesh/song-bot-md/refs/heads/main/IMGES/20240923_144904.jpg' },
             caption: aliveMessage
         }, { quoted: mek });
-        
+
     } catch (e) {
-        console.error("Error:", e);
-        reply("An error occurred while processing your request. Please try again later.");
+        console.error("Detailed Error:", e);
+        reply(`An error occurred: ${e.message}`);
     }
 });
