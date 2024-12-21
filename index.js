@@ -122,6 +122,10 @@ async function connectToWA() {
             }
         };
 
+if(!isOwner && config.MODE === "private") return
+if(!isOwner && isGroup && config.MODE === "inbox") return
+if(!isOwner && !isGroups && config.MODE === "groups") return
+
         // Command Handling
         const events = require('./command');
         const cmdName = isCmd ? body.slice(1).trim().split(" ")[0].toLowerCase() : false;
