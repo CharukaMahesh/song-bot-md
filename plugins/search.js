@@ -28,13 +28,13 @@ async (conn, mek, m, { from, quoted, q, reply }) => {
         // Prepare the results message
         let searchMessage = `*⭐ -ᴛᴏᴘ 5 ʏᴏᴜᴛᴜʙᴇ ꜱᴇᴀʀᴄʜ ʀᴇꜱᴜʟᴛꜱ- ⭐*\n\n`;
         results.forEach((video, index) => {
-            ╭─────────────✑
+            searchMessage += `╭─────────────✑\n`;
             searchMessage += `◉ *${index + 1}. ${video.title}*\n`;
             searchMessage += `*ᴅᴜʀᴀᴛɪᴏɴ⏰*: ${video.timestamp}\n`;
             searchMessage += `*ᴠɪᴇᴡꜱ🧿*: ${video.views}\n`;
             searchMessage += `*ᴀʜᴏ📆*: ${video.ago}\n`;
-            searchMessage += `*ʟɪɴᴋ🔗*(${video.url})\n\n`;
-            ╰─────────────✑
+            searchMessage += `*ʟɪɴᴋ🔗*: (${video.url})\n\n`;
+            searchMessage += `╰─────────────✑\n`;
         });
 
         searchMessage += "> ᴇɴᴊᴏʏ ʏᴏᴜʀ ʏᴏᴜᴛᴜʙᴇ ꜱᴇᴀʀᴄʜ\n";
@@ -53,4 +53,4 @@ async (conn, mek, m, { from, quoted, q, reply }) => {
         console.error("Error:", e);
         reply("> ᴇʀʀᴏʀ ᴏᴄᴄᴜʀʀᴇᴅ ᴡʜɪʟᴇ ꜱᴇᴀʀᴄʜɪɴɢ. ᴘʟᴇᴀꜱᴇ ᴛʀʏ ᴀɢᴀɪɴ ʟᴀᴛᴇʀ.❌");
     }
-};
+});
