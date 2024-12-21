@@ -73,6 +73,6 @@ async (conn, mek, m, { from, quoted, q, reply }) => {
 
     } catch (e) {
         console.error("Error:", e);
-        reply("An error occurred while processing your request. Please try again later.");
+        reply("> ᴇʀʀᴏʀ ᴅᴏᴡɴʟᴏᴀᴅɪɴɢ ʏᴏᴜʀ ᴠɪᴅᴇᴏ ᴀᴘɪ ᴛɪᴍᴇᴅ ᴏᴜᴛ ᴘʟᴇᴀꜱᴇ ᴄᴏɴᴛᴀᴄᴛ ᴅᴇᴠᴇʟᴏᴘᴇʀ⭐");
     }
 });
