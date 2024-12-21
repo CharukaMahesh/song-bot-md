@@ -3,7 +3,6 @@ const fg = require('api-dylux');
 const yts = require('yt-search');
 
 // 🎬--------VIDEO-DOWNLOAD-------//
-
 cmd({
     pattern: "video",
     alias: ["ytmp4", "vplay"],
@@ -15,25 +14,32 @@ async (conn, mek, m, { from, quoted, q, reply }) => {
     try {
         if (!q) return reply("Please provide a valid video name or URL... 🎬");
 
+        console.log("User Query:", q);
+
         // React with 🔍 and show searching text
         await conn.sendMessage(from, { react: { text: "🔍", key: mek.key } });
         reply("> ꜱᴇᴀʀᴄʜɪɴɢ ꜰᴏʀ ʏᴏᴜʀ ꜱᴏɴɢ.. 🔎");
 
         // Search video
         const search = await yts(q);
+        console.log("Search Results:", search);
+
         if (!search || !search.videos || !search.videos.length) {
             return reply("No results found for the given query.");
         }
 
         const data = search.videos[0];
+        console.log("Video Data:", data);
+
         const url = data.url;
 
-        let desc = `*⭐ -ᴠɪᴅᴇᴏ ᴅᴏᴡɴʟᴏᴀᴅᴇʀ- ⭐*
+        // Send video details with thumbnail
+        const desc = `*⭐ -ᴠɪᴅᴇᴏ ᴅᴏᴡɴʟᴏᴀᴅᴇʀ- ⭐*
 
 > ᴠɪᴅᴇᴏ ᴅᴇᴛᴀɪʟꜱ 📊
 
 ╭─────────────✑
-◉│ *1*    *ᴛɪᴛʟᴇ📽️ :* *${data.link}*
+◉│ *1*    *ᴛɪᴛʟᴇ📽️ :* *${data.title}*
 ◉│ *2*    *ᴛɪᴍᴇ⏰ :* *${data.timestamp}*
 ◉│ *3*    *ᴀɢᴏ📆 :* *${data.ago}*
 ◉│ *4*    *ᴠɪᴇᴡꜱ🔔 :* *${data.views}*
@@ -51,10 +57,13 @@ async (conn, mek, m, { from, quoted, q, reply }) => {
 
         // Download Video
         let downVideo = await fg.ytv(url);
+        console.log("Download Response:", downVideo);
+
         if (!downVideo || !downVideo.dl_url) {
             return reply("Failed to download video. Please try again later.");
         }
-        let downloadVideoUrl = downVideo.dl_url;
+
+        const downloadVideoUrl = downVideo.dl_url;
 
         // React with 📤 and show uploading text
         await conn.sendMessage(from, { react: { text: "📤", key: mek.key } });
@@ -73,6 +82,6 @@ async (conn, mek, m, { from, quoted, q, reply }) => {
 
     } catch (e) {
         console.error("Error:", e);
-        reply("> ᴇʀʀᴏʀ ᴅᴏᴡɴʟᴏᴀᴅɪɴɢ ʏᴏᴜʀ ᴠɪᴅᴇᴏ ᴀᴘɪ ᴛɪᴍᴇᴅ ᴏᴜᴛ ᴘʟᴇᴀꜱᴇ ᴄᴏɴᴛᴀᴄᴛ ᴅᴇᴠᴇʟᴏᴘᴇʀ⭐");
+        reply("> ᴇʀʀᴏʀ ᴅᴏᴡɴʟᴏᴀᴅɪɴɢ ʏᴏᴜʀ ᴠɪᴅᴇᴏ. ᴘʟᴇᴀꜱᴇ ᴄᴏɴᴛᴀᴄᴛ ᴅᴇᴠᴇʟᴏᴘᴇʀ.");
     }
 });
