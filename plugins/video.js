@@ -18,13 +18,12 @@ async (conn, mek, m, { from, quoted, q, reply }) => {
 
         // React with 🔍 and show searching text
         await conn.sendMessage(from, { react: { text: "🔍", key: mek.key } });
-        reply("> ꜱᴇᴀʀᴄʜɪɴɢ ꜰᴏʀ ʏᴏᴜʀ ꜱᴏɴɢ.. 🔎");
+        reply("> ꜱᴇᴀʀᴄʜɪɴɢ ꜰᴏʀ ʏᴏᴜʀ ᴠɪᴅᴇᴏ... 🔎");
 
         // Search video
         const search = await yts(q);
-        console.log("Search Results:", search);
-
         if (!search || !search.videos || !search.videos.length) {
+            console.log("Search Error:", search);
             return reply("No results found for the given query.");
         }
 
@@ -56,10 +55,9 @@ async (conn, mek, m, { from, quoted, q, reply }) => {
         reply("> ᴅᴏᴡɴʟᴏᴀᴅɪɴɢ ʏᴏᴜʀ ᴠɪᴅᴇᴏ...📥");
 
         // Download Video
-        let downVideo = await fg.ytv(url);
-        console.log("Download Response:", downVideo);
-
+        const downVideo = await fg.ytv(url);
         if (!downVideo || !downVideo.dl_url) {
+            console.log("Download Error:", downVideo);
             return reply("Failed to download video. Please try again later.");
         }
 
