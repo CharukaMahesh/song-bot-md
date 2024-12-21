@@ -39,9 +39,9 @@ async (conn, mek, m, { from, quoted, q, reply }) => {
 
         searchMessage += "> ᴇɴᴊᴏʏ ʏᴏᴜʀ ʏᴏᴜᴛᴜʙᴇ ꜱᴇᴀʀᴄʜ\n";
 
-        // Send the search results with an image
+        // Send the search results with an image thumbnail and video details
         await conn.sendMessage(from, {
-            image: { url: "https://raw.githubusercontent.com/CharukaMahesh/song-bot-md/refs/heads/main/IMGES/20241210_215109.jpg" },
+            image: { url: results[0].thumbnail },  // Using the thumbnail of the first search result
             caption: searchMessage
         }, { quoted: mek });
 
