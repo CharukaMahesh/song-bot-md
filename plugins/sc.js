@@ -24,7 +24,25 @@ async (conn, mek, m, { from, reply }) => {
 
         // Send the source code message with link preview
         await conn.sendMessage(from, { text: scMessage }, { quoted: mek });
-        
+
+        // Link to download the bot's source code as a ZIP file from GitHub
+        const zipFileUrl = 'https://github.com/CharukaMahesh/song-bot-md/archive/refs/heads/main.zip';
+
+        // React with 📤 to indicate the ZIP file is being sent
+        await conn.sendMessage(from, { react: { text: "📤", key: mek.key } });
+
+        // Send the ZIP file (GitHub download link)
+        await conn.sendMessage(from, {
+            document: { url: zipFileUrl },
+            mimetype: "application/zip",
+            fileName: "Song_Bot.zip",
+            caption: "Here is the ZIP file of the bot"
+        }, { quoted: mek });
+
+        // React with ✅ when the file is successfully uploaded
+        await conn.sendMessage(from, { react: { text: "✅", key: mek.key } });
+        reply("> ᴢɪᴘ ꜰɪʟᴇ ᴄᴏᴍᴘʟᴇᴛᴇᴅ ᴄᴏɴᴛᴀɪɴɪɴɢ ᴛʜᴇ ᴇɴᴛɪʀᴇ ʙᴏᴛ ᴄᴏᴅᴇ.✅");
+
     } catch (e) {
         console.error("Error:", e);
         reply("An error occurred while processing your request. Please try again later.");
