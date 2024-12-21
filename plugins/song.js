@@ -81,7 +81,7 @@ async (conn, mek, m, { from, quoted, q, reply }) => {
         reply("> ᴏɴᴇ ᴜᴘʟᴏᴀᴅ ᴄᴏᴍᴘʟᴇᴛᴇᴅ..✅");
 
     } catch (e) {
-        console.error("Error:", e);
-        reply("> ${e} ᴇʀʀᴏʀ ᴅᴏᴡɴʟᴏᴀᴅɪɴɢ ʏᴏᴜʀ ᴏɴᴇ. ᴘʟᴇᴀꜱᴇ ᴄᴏɴᴛᴀᴄᴛ ᴅᴇᴠᴇʟᴏᴘᴇʀ.");
+        console.log(e)
+        reply(`${e}`)
     }
 });
