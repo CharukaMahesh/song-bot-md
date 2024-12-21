@@ -32,12 +32,19 @@ async (conn, mek, m, { from, quoted, q, reply }) => {
             searchMessage += `◉ *${index + 1}. ${video.title}*\n\n`;
             
             searchMessage += `01• *ᴅᴜʀᴀᴛɪᴏɴ⏰*: ${video.timestamp} \n`; // Ensure space after the special character
-            searchMessage += `02• *ᴠɪᴇᴡꜱ⭐*: ${video.views} \n`;
+            searchMessage += `02• *ᴠɪᴇᴡꜱ🧿*: ${video.views} \n`;
             searchMessage += `03• *ᴀɢᴏ📆*: ${video.ago} \n`;
             searchMessage += `04• *ʟɪɴᴋ🔗*: (${video.url}) \n\n`;
             searchMessage += `╰─────────────✑\n`;
         });
 
+        // Get the current date and time
+        const currentDateTime = new Date();
+        const date = currentDateTime.toLocaleDateString();  // Format as per the local date
+        const time = currentDateTime.toLocaleTimeString();  // Format as per the local time
+
+        // Append date and time to the message
+        searchMessage += `\n*📅 Date*: ${date}\n*🕒 Time*: ${time}\n`;
         searchMessage += "> ᴇɴᴊᴏʏ ʏᴏᴜʀ ʏᴏᴜᴛᴜʙᴇ ꜱᴇᴀʀᴄʜ\n";
 
         // Send the search results with an image thumbnail and video details
