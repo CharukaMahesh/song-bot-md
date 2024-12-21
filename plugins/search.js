@@ -1,4 +1,4 @@
-const yts = require('yt-search');
+ const yts = require('yt-search');
 const { cmd } = require('../command');
 
 // 🔍--------YOUTUBE-SEARCH--------//
@@ -30,10 +30,11 @@ async (conn, mek, m, { from, quoted, q, reply }) => {
         results.forEach((video, index) => {
             searchMessage += `╭─────────────✑\n`;
             searchMessage += `◉ *${index + 1}. ${video.title}*\n`;
-            searchMessage += `*ᴅᴜʀᴀᴛɪᴏɴ⏰*: ${video.timestamp}\n`;
-            searchMessage += `*ᴠɪᴇᴡꜱ🧿*: ${video.views}\n`;
-            searchMessage += `*ᴀʜᴏ📆*: ${video.ago}\n`;
-            searchMessage += `*ʟɪɴᴋ🔗*: (${video.url})\n\n`;
+            
+            searchMessage +=   `01• *ᴅᴜʀᴀᴛɪᴏɴ⏰*: ${video.timestamp}\n`;
+            searchMessage +=   `02• *ᴠɪᴇᴡꜱ⭐*: ${video.views}\n`;
+            searchMessage +=   `03• *ᴀɢᴏ📆*: ${video.ago}\n`;
+            searchMessage +=   `04• *ʟɪɴᴋ🔗*: (${video.url})\n\n`;
             searchMessage += `╰─────────────✑\n`;
         });
 
