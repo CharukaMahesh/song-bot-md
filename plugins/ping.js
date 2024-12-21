@@ -7,29 +7,34 @@ cmd({
     filename: __filename
 },
 async (conn, mek, m, {
-    from, reply
+    from, reply, pushname = "User" // Default name if pushname is not available
 }) => {
     try {
-        // React with 🚀 when the command is triggered
+        // React to the command
         await conn.sendMessage(from, {
             react: { text: "🌐", key: mek.key }
         });
 
-        // Record the time when the command is received
+        // Record the start time
         const startTime = Date.now();
-        
-        // Send a message to check the response time
+
+        // Send the initial ping message
         await conn.sendMessage(from, { text: "> ᴘɪɴɢɪɴɢ..⭐" });
 
-        // Calculate the time difference and send the ping result with a 📡 emoji
-        const endTime = Date.now();
-        const responseTime = endTime - startTime;
-        await conn.sendMessage(from, { text: `*ʜᴇʟʟᴏ ${pushname}*
+        // Calculate response time
+        const responseTime = Date.now() - startTime;
+
+        // Send the final ping result
+        await conn.sendMessage(from, { 
+            text: `*ʜᴇʟʟᴏ ${pushname}*
 
 *ʀᴇꜱᴘᴏɴꜱᴇ ᴛɪᴍᴇ ɪꜱ* ⏰ *:* *${responseTime} ᴍꜱ* 📡
 
-> ᴍᴀᴅᴇ ʙʏ ᴄʜᴀʀᴜᴋᴀ` }, { quoted: mek });
+> ᴍᴀᴅᴇ ʙʏ ᴄʜᴀʀᴜᴋᴀ` 
+        }, { quoted: mek });
 
+        // Optional: Log the response time for debugging
+        console.log(`Ping response time: ${responseTime} ms`);
     } catch (e) {
         console.error("Error:", e);
         reply("An error occurred while processing your request. Please try again later.");
