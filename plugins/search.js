@@ -31,11 +31,11 @@ async (conn, mek, m, { from, quoted, q, reply }) => {
             searchMessage += `╭─────────────✑\n`;
             searchMessage += `◉ *${index + 1}. ${video.title}*\n\n`;
             
-            searchMessage +=    `01• *ᴅᴜʀᴀᴛɪᴏɴ⏰*: ${video.timestamp}\n`;
-            searchMessage +=    `02• *ᴠɪᴇᴡꜱ⭐*: ${video.views}\n`;
-            searchMessage +=    `03• *ᴀɢᴏ📆*: ${video.ago}\n`;
-            searchMessage +=    `04• *ʟɪɴᴋ🔗*: (${video.url})\n\n`;
-            searchMessage += `╰─────────────✑\n`;
+              searchMessage +=    `01• *ᴅᴜʀᴀᴛɪᴏɴ⏰*: ${video.timestamp}\n`;
+              searchMessage +=    `02• *ᴠɪᴇᴡꜱ⭐*: ${video.views}\n`;
+              searchMessage +=    `03• *ᴀɢᴏ📆*: ${video.ago}\n`;
+              searchMessage +=    `04• *ʟɪɴᴋ🔗*: (${video.url})\n\n`;
+              searchMessage += `╰─────────────✑\n`;
         });
 
         searchMessage += "> ᴇɴᴊᴏʏ ʏᴏᴜʀ ʏᴏᴜᴛᴜʙᴇ ꜱᴇᴀʀᴄʜ\n";
